@@ -12,6 +12,7 @@ import numpy as np
 import sys
 import time
 import random
+from DrawSudoku import drawSudoku
 
 
 #CONSTANTS
@@ -19,16 +20,18 @@ import random
 """ Colors """
 white = (255, 255, 255)
 black = (0, 0, 0)
-width = 900; height = 900
+size = 540
+cellSize = size / 9
 
-
+#PYGAME INITIALIZATION
 def init_pygame():
     pygame.init()
-    screen = pygame.display.set_mode((width, height))
+    screen = pygame.display.set_mode((size, size))
     pygame.display.set_caption("Sudoku Solver")
     font = pygame.font.SysFont(None, 40)
     return screen, font
 
+#Sudoku Randomized Grid Selection Using NumPy and Pandas
 def load_sudoku(file_path) -> list[list[int]]:
     df = pd.read_csv(file_path)
     random_quiz = random.choice(df['quizzes'])
@@ -36,38 +39,70 @@ def load_sudoku(file_path) -> list[list[int]]:
     return grid
 
 
+#Helper tooll used in dfs logic
+def is_valid(grid, num, pos: tuple):
+        row, col = pos #tuple of row and column pair
+        #check the row
+        if num in grid[row]:
+            return False
+        if num in grid[:, col]:
+            return False
+        
+        box_x, box_y = col // 3, row // 3
+        for i in range(box_y * 3, box_y * 3 + 3):
+            for j in range(box_x * 3, box_x * 3 + 3):
+                if grid[i][j] == num and (i, j) != pos:
+                    return False
+                
+        return True
 
-class drawSudoku:
-    def __init__(self, cellSize):
-        self.cellSize = cellSize
+#DFS Backtracking solvler with visualization implemented
+def dfs_backtracking_solver(grid, screen, font, draw):
+    
+    for row in range(9):
+        for col in range(9):
+            if grid[row][col] == 0:
+                for num in range(1, 10):
+                    if is_valid(grid, num, (row, col)):
+                        grid[row][col] = num
+                        screen.fill(white)
+                        draw.drawGrid(screen)
+                        draw.draw_numbers(screen, font, grid)
+                        pygame.display.flip()
+                        if dfs_backtracking_solver(grid, screen, font, draw):
+                            return True
+                        grid[row][col] = 0
+                        screen.fill(white)
+                        draw.drawGrid(screen)
+                        draw.draw_numbers(screen, font, grid)
+                        pygame.display.flip()
 
+                return False
+    return True
 
-    def drawGrid(self, screen):
-        for i in range(0, 10):
-            line_thickness = 3 if i % 3 == 0 else 1
-            pygame.draw.line(screen, black, (0, i * self.cellSize), (540, i * self.cellSize), (line_thickness))
-            pygame.draw.line(screen, black, (i * self.cellSize, 0), ( i * self.cellSize, 540), (line_thickness))
-
-    def draw_numbers(self, screen, font, grid):
-        for row in range(9):
-            for col in range(9):
-                num = grid[row][col]
-
-                if num != 0:
-                    text = font.render(str(num), True, black)
-                    text_rect = text.get_rect(center=(col * self.cellSize + self.cellSize // 2, row * self.cellSize + self.cellSize // 2))
-                    screen.blit(text, text_rect)
-
+#Responsible for displaying the sudoku into a pygame window
 def run_sudoku_display(grid):
     screen, font = init_pygame()
     clock = pygame.time.Clock()
-    draw = drawSudoku(60)
+    draw = drawSudoku(cellSize)
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
 
+                if event.key == pygame.K_d:
+                
+                    dfs_backtracking_solver(grid, screen, font, draw)
+
+                if event.key == pygame.K_r:
+                    grid = load_sudoku('sudoku.csv')
+                    print(grid)
+                    run_sudoku_display(grid)
+            
+        
+        
         screen.fill(white)
         draw.drawGrid(screen)
         draw.draw_numbers(screen, font, grid)
