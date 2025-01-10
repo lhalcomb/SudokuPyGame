@@ -58,7 +58,11 @@ class drawSudoku:
                     text_rect = text.get_rect(center=(col * self.cellSize + self.cellSize // 2, row * self.cellSize + self.cellSize // 2))
                     screen.blit(text, text_rect)
 
-def run_sudoku_display(grid):
+if __name__ == "__main__":
+    grid = load_sudoku('sudoku.csv')
+    print(grid)
+
+    #Runs the Game Loop
     screen, font = init_pygame()
     clock = pygame.time.Clock()
     draw = drawSudoku(60)
@@ -76,10 +80,3 @@ def run_sudoku_display(grid):
 
     pygame.quit()
     sys.exit() 
-
-
-if __name__ == "__main__":
-    grid = load_sudoku('sudoku.csv')
-
-    print(grid)
-    run_sudoku_display(grid)
