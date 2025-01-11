@@ -20,7 +20,7 @@ from DrawSudoku import drawSudoku
 """ Colors """
 white = (255, 255, 255)
 black = (0, 0, 0)
-size = 540
+size = 1080
 cellSize = size / 9
 
 #PYGAME INITIALIZATION
@@ -66,14 +66,14 @@ def dfs_backtracking_solver(grid, screen, font, draw):
                     if is_valid(grid, num, (row, col)):
                         grid[row][col] = num
                         screen.fill(white)
-                        draw.drawGrid(screen)
+                        draw.drawGrid(screen, size)
                         draw.draw_numbers(screen, font, grid)
                         pygame.display.flip()
                         if dfs_backtracking_solver(grid, screen, font, draw):
                             return True
                         grid[row][col] = 0
                         screen.fill(white)
-                        draw.drawGrid(screen)
+                        draw.drawGrid(screen,size)
                         draw.draw_numbers(screen, font, grid)
                         pygame.display.flip()
 
@@ -107,7 +107,7 @@ def run_sudoku_display(grid):
         
         
         screen.fill(white)
-        draw.drawGrid(screen)
+        draw.drawGrid(screen, size)
         draw.draw_numbers(screen, font, grid)
         pygame.display.flip()
         clock.tick(30)
