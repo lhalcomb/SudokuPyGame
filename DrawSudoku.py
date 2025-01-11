@@ -9,8 +9,8 @@ class drawSudoku:
     def drawGrid(self, screen):
         for i in range(10):
             line_thickness = 3 if i % 3 == 0 else 1
-            pygame.draw.line(screen, black, (0, i * self.cellSize), (540, i * self.cellSize), (line_thickness))
-            pygame.draw.line(screen, black, (i * self.cellSize, 0), ( i * self.cellSize, 540), (line_thickness))
+            pygame.draw.line(screen, black, (0, i * self.cellSize), (540, i * self.cellSize), (line_thickness)) #horizontal line
+            pygame.draw.line(screen, black, (i * self.cellSize, 0), ( i * self.cellSize, 540), (line_thickness)) #vertical line
 
     def draw_numbers(self, screen, font, grid):
         for row in range(9):

@@ -48,7 +48,7 @@ def is_valid(grid, num, pos: tuple):
         if num in grid[:, col]:
             return False
         
-        box_x, box_y = col // 3, row // 3
+        box_x, box_y = col // 3, row // 3 
         for i in range(box_y * 3, box_y * 3 + 3):
             for j in range(box_x * 3, box_x * 3 + 3):
                 if grid[i][j] == num and (i, j) != pos:
@@ -100,6 +100,9 @@ def run_sudoku_display(grid):
                     grid = load_sudoku('sudoku.csv')
                     print(grid)
                     run_sudoku_display(grid)
+
+                if event.key == pygame.K_q:
+                    running = False
             
         
         
