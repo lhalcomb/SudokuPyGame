@@ -20,7 +20,7 @@ from DrawSudoku import drawSudoku
 """ Colors """
 white = (255, 255, 255)
 black = (0, 0, 0)
-size = 1080
+size = 540
 cellSize = size / 9
 
 #PYGAME INITIALIZATION
@@ -45,6 +45,7 @@ def is_valid(grid, num, pos: tuple):
         #check the row
         if num in grid[row]:
             return False
+        #check the column
         if num in grid[:, col]:
             return False
         
