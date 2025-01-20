@@ -13,6 +13,8 @@ import sys
 import time
 import random
 from DrawSudoku import drawSudoku
+from DLX import DLX, Node
+
 
 
 #CONSTANTS
@@ -81,6 +83,32 @@ def dfs_backtracking_solver(grid, screen, font, draw):
                 return False
     return True
 
+
+"""Dancing Links Implementation"""
+def build_cover_matrix(grid):
+    dlx = DLX()
+    for row in range(9):
+        for col in range(9):
+            for digit in range(1, 10):
+                if grid[row][col] != 0 and grid[row][col] != digit:
+                    continue #skip the invalid digit placements
+                
+                cell_col = 9 * row + col
+                row_col = 81 + 9 * row + digit - 1
+                col_col = 162 + 9 * col + digit - 1
+                box = (r// 3) * 3 + c // 3
+                box_col = 243 + 9 * box + digit - 1
+
+                for col in [cell_col, row_col, col_col, box_col]:
+                    dlx.add_column(row=f"{row}{col}{digit}", col = col)
+        return dlx
+
+def solve_sudoku_dlx(grid, screen, font, draw):
+    dlx = build_cover_matrix(grid)
+    pass
+
+
+
 #Responsible for displaying the sudoku into a pygame window
 def run_sudoku_display(grid):
     screen, font = init_pygame()
@@ -97,6 +125,9 @@ def run_sudoku_display(grid):
                 if event.key == pygame.K_d:
                 
                     dfs_backtracking_solver(grid, screen, font, draw)
+                
+                if event.key == pygame.K_l:
+                    solve_sudoku_dlx(grid, screen, font, draw)
 
                 if event.key == pygame.K_r:
                     grid = load_sudoku('sudoku.csv')
