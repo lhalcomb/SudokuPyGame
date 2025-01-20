@@ -112,7 +112,7 @@ def solve_sudoku_dlx(grid, screen, font, draw):
 #Responsible for displaying the sudoku into a pygame window
 def run_sudoku_display(grid):
     screen, font = init_pygame()
-    font = pygame.font.SysFont('arial', 60)
+    font = pygame.font.SysFont('arial', int(cellSize // 2))
     clock = pygame.time.Clock()
     draw = drawSudoku(cellSize)
     running = True
