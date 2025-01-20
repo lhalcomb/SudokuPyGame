@@ -13,16 +13,16 @@ class DLX:
         self.columns = {} #Dictionary to store the columns
         self.nodes = [] #List to store the nodes
     
-    def add_column(self, row, col):
+    def add_node(self, row, col):
         node = Node(name = f"R{row}C{col}")
         self.nodes.append(node)
         #TODO
         pass
 
-    def cover(self, column):
+    def cover(self, node):
         pass
 
-    def uncover(self, column):
+    def uncover(self, node):
         pass
 
     def iterate(self, move):

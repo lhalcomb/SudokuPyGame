@@ -96,11 +96,11 @@ def build_cover_matrix(grid):
                 cell_col = 9 * row + col
                 row_col = 81 + 9 * row + digit - 1
                 col_col = 162 + 9 * col + digit - 1
-                box = (r// 3) * 3 + c // 3
+                box = (row// 3) * 3 + col // 3
                 box_col = 243 + 9 * box + digit - 1
 
                 for col in [cell_col, row_col, col_col, box_col]:
-                    dlx.add_column(row=f"{row}{col}{digit}", col = col)
+                    dlx.add_node(row=f"{row}{col}{digit}", col = col)
         return dlx
 
 def solve_sudoku_dlx(grid, screen, font, draw):
@@ -112,7 +112,7 @@ def solve_sudoku_dlx(grid, screen, font, draw):
 #Responsible for displaying the sudoku into a pygame window
 def run_sudoku_display(grid):
     screen, font = init_pygame()
-    font = pygame.font.SysFont('arial', 60)
+    font = pygame.font.SysFont('arial', int(cellSize // 2))
     clock = pygame.time.Clock()
     draw = drawSudoku(cellSize)
     running = True
