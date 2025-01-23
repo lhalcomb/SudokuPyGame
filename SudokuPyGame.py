@@ -86,6 +86,7 @@ def dfs_backtracking_solver(grid, screen, font, draw):
 
 """Dancing Links Implementation"""
 def build_cover_matrix(grid):
+    pass
     # dlx = DLX()
     # for row in range(9):
     #     for col in range(9):
@@ -111,6 +112,7 @@ def solve_sudoku_dlx(grid, screen, font, draw):
     dlx = build_cover_matrix(grid)
     
     solution = []
+    pass
     # def search(k):
     #     if dlx.head.right == dlx.head:
     #         return True # We did it, it is solved
