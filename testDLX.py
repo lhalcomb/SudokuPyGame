@@ -21,3 +21,5 @@ for column in dlx.columns.values():
     while node != column:
         print("row      ", node.header.name)
         node = node.down
+
+
