@@ -11,12 +11,6 @@ class Cell:
         self.col = col
         self.name = name
 
-    # def __repr__(self) -> str:
-    #     return f'Cell({self.name}, left = {self.left}, right = {self.right}, up = {self.up}, down = {self.down}, colHeader = {self.col})'
-        
-    # def __str__(self) -> str:
-    #     return self.__repr__()
-
 class Column(Cell):
     def __init__(self, size = 0, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
