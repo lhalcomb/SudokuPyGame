@@ -110,8 +110,7 @@ def run_sudoku_display(grid):
                     dfs_backtracking_solver(grid, screen, font, draw)
                 
                 if event.key == pygame.K_l:
-                    solve_sudoku_dlx(grid, screen, font, draw)
-                    #doesnt work
+                    print("Solving using Dancing Links")
 
                 if event.key == pygame.K_r:
                     grid = load_sudoku('sudoku.csv')
