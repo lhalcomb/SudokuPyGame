@@ -13,7 +13,7 @@ import sys
 import time
 import random
 from DrawSudoku import drawSudoku
-from DLX import DLX, Node
+
 
 
 
@@ -85,75 +85,9 @@ def dfs_backtracking_solver(grid, screen, font, draw):
 
 
 """Dancing Links Implementation"""
-def build_cover_matrix(grid):
-    pass
-    # dlx = DLX()
-    # for row in range(9):
-    #     for col in range(9):
-    #         for digit in range(1, 10):
-    #             #print(f"row: {row}, col: {col}, grid size: {len(grid)}x{len(grid[0])}")
-    #             if grid[row][col] != 0 and grid[row][col] != digit:
-    #                 continue #skip the invalid digit placements
-                
-    #             cell_col = 9 * row + col
-    #             row_col = 81 + 9 * row + digit - 1
-    #             col_col = 162 + 9 * col + digit - 1
-    #             box = (row// 3) * 3 + col // 3
-    #             box_col = 243 + 9 * box + digit - 1
-
-    #             for constraint_col in [cell_col, row_col, col_col, box_col]:
-    #                 if constraint_col is None:
-    #                     raise ValueError(f"Invalid column: {constraint_col}")
-    #                 dlx.add_node(row=f"{row}{col}{digit}", col = constraint_col)
-    #return dlx
 
 #Solve the sudoku using the dancing links algorithm
-def solve_sudoku_dlx(grid, screen, font, draw):
-    dlx = build_cover_matrix(grid)
-    
-    solution = []
-    pass
-    # def search(k):
-    #     if dlx.head.right == dlx.head:
-    #         return True # We did it, it is solved
-        
-    #     #Select the column with the fewest rows
-    #     col = min(
-    #         (node for node in dlx.iterate(dlx.head.right, "right")),
-    #         key= lambda x : sum(1 for _ in dlx.iterate(x.down, "down")), #count the number of rows
-    #     )
-    #     print(col)
-    #     print(dlx.head)
-    #     dlx.cover(col)
-    #     for row_node in dlx.iterate(col.down, "down"):
-    #         solution.append(row_node)
-    #         for col_node in dlx.iterate(row_node.right, "right"):
-    #             dlx.cover(col_node)
 
-    #         if search(k + 1):
-    #             return True
-            
-    #         #backtrack
-    #         solution.pop()
-    #         for col_node in dlx.iterate(row_node.right, "right"):
-    #             dlx.uncover(col_node)
-    #     dlx.uncover(col)
-    #     return False
-    
-    # if search(0):
-    #     for node in solution:
-    #         r, c, d = map(int, node.name)
-
-    #         grid[r][c] = d
-    #         screen.fill(white)
-    #         draw.drawGrid(screen, size)
-    #         draw.drawNumbers(screen, grid, size, font)
-
-    #         pygame.display.flip()
-
-    #     print("Rest easy, your sudoku has been solved...")
-    # else: 
-    #     print("No solution found")
 
 
 
