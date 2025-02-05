@@ -1,4 +1,5 @@
 from typing import List
+import numpy as np
 
 Matrix2D = List[List[int]]
 
@@ -24,10 +25,35 @@ class IncidenceMatrix:
     def __init__(self, grid: Matrix2D):
         self.header: Root = Root()
         self.grid = grid
+        self.sudoku_incidence = IncidenceMatrix.generate_incidence_matrix()
         self.create_dbly_linked_list()
     
     def grid(self) -> Matrix2D:
         return self.grid
+    
+    def generate_incidence_matrix() -> np.ndarray:
+        Matrix2D = np.zeros((729, 324), dtype= int)
+        for row in range(9):
+            for col in range(9):
+                for num in range(9):
+                    row_index = num + col * 9 + row * 9 * 9
+
+                    #cell constraint
+                    Matrix2D[row_index][81 * 0 + col + row * 9] = 1
+
+                    #row constraint
+                    Matrix2D[row_index][81 * 1 + num + row * 9] = 1
+
+                    #col constraint
+                    Matrix2D[row_index][81 * 2 + num + col * 9] = 1
+
+                    #box constraint
+                    box = (row // 3) * 3 + (col // 3)
+                    Matrix2D[row_index][81 * 3 + 9 * box + num] = 1
+        
+        return Matrix2D
+    
+    
     
     def create_dbly_linked_list(self):
         self.create_columns()
@@ -131,3 +157,5 @@ if __name__ == "__main__":
     
     sparse_matrix = IncidenceMatrix(grid_noSol)
     sparse_matrix.print_sparse_matrix()
+
+    IncidenceMatrix.generate_incidence_matrix()

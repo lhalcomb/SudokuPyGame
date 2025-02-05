@@ -13,6 +13,7 @@ import sys
 import time
 import random
 from DrawSudoku import drawSudoku
+from incidence_matrix import *
 
 
 
@@ -135,4 +136,9 @@ def run_sudoku_display(grid):
 if __name__ == "__main__":
     grid = load_sudoku('sudoku.csv')
     print(grid)
-    run_sudoku_display(grid)
+    #run_sudoku_display(grid)
+
+    sparse_matrix = IncidenceMatrix(grid)
+    
+
+
