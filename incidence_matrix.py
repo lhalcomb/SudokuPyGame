@@ -63,14 +63,14 @@ class IncidenceMatrix:
 
     def create_columns(self) -> None:
         prev_col = self.header
-        for col_index in range(len(self.grid[0])):
+        for col_index in range(324):
             name = f"col->{col_index}"
             col = Column(size=0, name=name)
             col.left = prev_col
             prev_col.right = col
             prev_row = col
-            for cell_index in range(len(self.grid)):
-                if self.grid[cell_index][col_index] != 1:
+            for cell_index in range(729):
+                if self.sudoku_incidence[cell_index][col_index] != 1:
                     continue
                 row = Cell(name=f"row->{cell_index}", col=col)
                 col.size += 1
@@ -105,29 +105,28 @@ class IncidenceMatrix:
             prev_cell.right = first_cell
 
     def get_cell_from_columns(self, row_index, col_index) -> Cell | None:
-        if self.grid[row_index][col_index] == 0:
+        if self.sudoku_incidence[row_index][col_index] == 0:
             return None
         
-        col = self.header
+        col = self.columns[col_index]
 
-        while col.name != f"col->{col_index}":
-            col = col.right
-
-        cell = col
-
-        while cell.name != f"row->{row_index}":
+        cell = cell.down
+        while cell != col:
+            if int(cell.name.split('->')[1]) == row_index:
+                return cell
             cell = cell.down
 
-        return cell
+        return None
 
-    def ones_in_row(self, row) -> int:
-            ones = []
+    def ones_in_row(self, row) -> List[int]:
+            # ones = []
             
-            for row in range(len(self.grid[0])):
-                if self.grid[row] == 1:
-                    ones.append(row)
+            # for row in range(len(self.grid[0])):
+            #     if self.grid[row] == 1:
+            #         ones.append(row)
             
-            return ones
+            # return ones
+            return [col for col in range(324) if self.sudoku_incidence[row][col] == 1]
     def print_sparse_matrix(self): 
         cells: List[List[str]] = [[self.header.name]]
         col = self.header.right
