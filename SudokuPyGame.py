@@ -13,7 +13,7 @@ import sys
 import time
 import random
 from DrawSudoku import drawSudoku
-#from incidence_matrix import *
+from DLXSolver import *
 
 
 
@@ -111,7 +111,22 @@ def run_sudoku_display(grid):
                     dfs_backtracking_solver(grid, screen, font, draw)
                 
                 if event.key == pygame.K_l:
-                    print("Solving using Dancing Links")
+                    print("Solving using Dancing Links...")
+                    matrix = IncidenceMatrix(grid)
+                    solver = DLXSolver(matrix)  
+                    solutions = solver.solve()
+
+                    if solutions:
+                        for row_node in solutions:
+                            row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
+                            grid[row][col] = num + 1
+
+                        screen.fill(white)
+                        draw.drawGrid(screen, size)
+                        draw.draw_numbers(screen, font, grid)
+                        pygame.display.flip()
+                    else:
+                        print("No Solution Found")
 
                 if event.key == pygame.K_r:
                     grid = load_sudoku('sudoku.csv')
@@ -136,7 +151,7 @@ def run_sudoku_display(grid):
 if __name__ == "__main__":
     grid = load_sudoku('sudoku.csv')
     print(grid)
-    #run_sudoku_display(grid)
+    run_sudoku_display(grid)
 
     #sparse_matrix = IncidenceMatrix(grid)
     
