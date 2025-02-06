@@ -6,6 +6,7 @@ Algorithms Used:
 
 """
 
+import os
 import pygame
 import pandas as pd
 import numpy as np
@@ -93,6 +94,17 @@ def dfs_backtracking_solver(grid, screen, font, draw):
 def solve_sudokucsv(file_path):
     df = pd.read_csv(file_path)
     solve_count = 0 
+    total_solve_time = 0
+
+    iteration_file = 'iteration_count.txt'
+    if os.path.exists(iteration_file):
+        with open(iteration_file, 'r') as f:
+            iteration = int(f.read().strip())
+    else:
+        iteration_count = 0
+
+    iteration_count += 1
+
     for index, row in df.iterrows():
         grid = np.array([int(char) for char in row['quizzes']]).reshape(9, 9)
         matrix = IncidenceMatrix(grid)
@@ -101,6 +113,7 @@ def solve_sudokucsv(file_path):
         solutions = solver.solve()
         end_time = time.time()
         solve_time = end_time - start_time
+        total_solve_time += solve_time
         if solutions:
             solve_count += 1
             for row_node in solutions:
@@ -111,9 +124,20 @@ def solve_sudokucsv(file_path):
         else:
             print("No Solution Found")
     
-    print(f"Average Solve Time: {solve_time / solve_count:.4f} seconds")
+    if solve_count > 0:
+        average_solve_time = total_solve_time / solve_count
+    else: 
+        average_solve_time = 0
+    
+    print(f"Average Solve Time: {average_solve_time:.4f} seconds")
 
+    with open('average_solve_time.txt', 'w') as f:
+        f.write(f"Iteration: {iteration_count} Average Solve Time: {average_solve_time:.4f} seconds")
+    
+    with open(iteration_file, 'w') as f:
+        f.write(str(iteration_count))
 
+        
 def print_grid(grid, solve_count, solve_time):
     print(f"Grid Solution: {solve_count}")
     print(f"Solved in: {solve_time:.4f} seconds")
