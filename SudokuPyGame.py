@@ -24,6 +24,9 @@ from DLXSolver import *
 """ Colors """
 white = (255, 255, 255)
 black = (0, 0, 0)
+hack_green = (43, 83, 41)
+back_ground_green = (100, 149, 104)
+
 size = 540
 cellSize = size / 9
 
@@ -70,14 +73,14 @@ def dfs_backtracking_solver(grid, screen, font, draw):
                 for num in range(1, 10):
                     if is_valid(grid, num, (row, col)):
                         grid[row][col] = num
-                        screen.fill(white)
+                        screen.fill(black)
                         draw.drawGrid(screen, size)
                         draw.draw_numbers(screen, font, grid)
                         pygame.display.flip()
                         if dfs_backtracking_solver(grid, screen, font, draw):
                             return True
                         grid[row][col] = 0
-                        screen.fill(white)
+                        screen.fill(black)
                         draw.drawGrid(screen,size)
                         draw.draw_numbers(screen, font, grid)
                         pygame.display.flip()
@@ -99,7 +102,7 @@ def solve_sudokucsv(file_path):
     iteration_file = 'iteration_count.txt'
     if os.path.exists(iteration_file):
         with open(iteration_file, 'r') as f:
-            iteration = int(f.read().strip())
+            iteration_count = int(f.read().strip())
     else:
         iteration_count = 0
 
@@ -109,17 +112,23 @@ def solve_sudokucsv(file_path):
         grid = np.array([int(char) for char in row['quizzes']]).reshape(9, 9)
         matrix = IncidenceMatrix(grid)
         solver = DLXSolver(matrix)  
+
         start_time = time.time()
         solutions = solver.solve()
         end_time = time.time()
         solve_time = end_time - start_time
+
         total_solve_time += solve_time
+
         if solutions:
             solve_count += 1
             for row_node in solutions:
                 row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
                 grid[row][col] = num + 1
-            print_grid(grid, solve_count, solve_time)
+
+            if solve_count % 10000 == 0:
+                print_grid(grid, solve_count, solve_time)
+            #print_grid(grid, solve_count, solve_time)
         
         else:
             print("No Solution Found")
@@ -176,12 +185,20 @@ def run_sudoku_display(grid):
                             row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
                             grid[row][col] = num + 1
 
-                        screen.fill(white)
+                        screen.fill(black)
                         draw.drawGrid(screen, size)
                         draw.draw_numbers(screen, font, grid)
+
+                        
+                        
                         pygame.display.flip()
                     else:
                         print("No Solution Found")
+
+                    
+                    
+                    grid = load_sudoku('sudoku.csv')
+                    run_sudoku_display(grid)
 
                 if event.key == pygame.K_a:
                     solve_sudokucsv('sudoku.csv')
@@ -196,7 +213,7 @@ def run_sudoku_display(grid):
             
         
         
-        screen.fill(white)
+        screen.fill(black)
         draw.drawGrid(screen, size)
         draw.draw_numbers(screen, font, grid)
         pygame.display.flip()
@@ -209,8 +226,8 @@ def run_sudoku_display(grid):
 if __name__ == "__main__":
     grid = load_sudoku('sudoku.csv')
     #print(grid)
-    #run_sudoku_display(grid)
-    solve_sudokucsv('sudoku.csv')
+    run_sudoku_display(grid)
+    #solve_sudokucsv('sudoku.csv')
     #sparse_matrix = IncidenceMatrix(grid)
     
 
