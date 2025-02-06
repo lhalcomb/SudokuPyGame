@@ -1,6 +1,8 @@
 from typing import List
 import numpy as np
 
+from SudokuPyGame import load_sudoku
+
 Matrix2D = List[List[int]]
 
 class Cell:
@@ -157,17 +159,20 @@ if __name__ == "__main__":
     #         [0, 0, 1, 0],
     #         [1, 0, 1, 1]]
 
-    sudoku_grid = [
-        [5, 3, 0, 0, 7, 0, 0, 0, 0],
-        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-        [0, 9, 8, 0, 0, 0, 0, 6, 0],
-        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-        [7, 0, 0, 0, 2, 0, 0, 0, 6],
-        [0, 6, 0, 0, 0, 0, 2, 8, 0],
-        [0, 0, 0, 4, 1, 9, 0, 0, 5],
-        [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    ]
+
+    sudoku_grid = load_sudoku("sudoku.csv")
+    print(sudoku_grid)
+    # sudoku_grid = [
+    #     [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    #     [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    #     [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    #     [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    #     [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    #     [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    #     [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    #     [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    #     [0, 0, 0, 0, 8, 0, 0, 7, 9]
+    # ]
     
     sparse_matrix = IncidenceMatrix(sudoku_grid)
     sparse_matrix.print_sparse_matrix()

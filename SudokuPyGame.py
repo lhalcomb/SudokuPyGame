@@ -13,7 +13,7 @@ import sys
 import time
 import random
 from DrawSudoku import drawSudoku
-from incidence_matrix import *
+#from incidence_matrix import *
 
 
 
