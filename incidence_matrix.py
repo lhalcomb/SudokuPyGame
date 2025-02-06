@@ -172,5 +172,12 @@ if __name__ == "__main__":
     sparse_matrix = IncidenceMatrix(sudoku_grid)
     sparse_matrix.print_sparse_matrix()
 
+    print("                        /n")
+    print("                        /n")
+
+    for col in sparse_matrix.columns:
+        print(f"Column Name: {col.name}, Column Size -> {col.size}")
+    """This means, for the respective contraint, how many empty cells are there in the column """
+
     # im = IncidenceMatrix.generate_incidence_matrix()
     # print(np.array(im))
