@@ -24,7 +24,7 @@ class Root(Column):
 class IncidenceMatrix: 
     def __init__(self, grid: Matrix2D):
         self.header: Root = Root()
-        self.grid = grid
+        self.columns: List[Column] = [None] * 324
         self.sudoku_incidence = self.generate_incidence_matrix(grid)
         self.create_dbly_linked_list()
     
@@ -68,6 +68,7 @@ class IncidenceMatrix:
             col = Column(size=0, name=name)
             col.left = prev_col
             prev_col.right = col
+            self.columns[col_index] = col
             prev_row = col
             for cell_index in range(729):
                 if self.sudoku_incidence[cell_index][col_index] != 1:
@@ -84,7 +85,7 @@ class IncidenceMatrix:
         prev_col.right = self.header
 
     def connect_rows(self) -> None:
-        for row in range(len(self.grid)):
+        for row in range(729):
             ones_in_row = self.ones_in_row(row)
 
             if len(ones_in_row) == 0:
@@ -110,7 +111,7 @@ class IncidenceMatrix:
         
         col = self.columns[col_index]
 
-        cell = cell.down
+        cell = col.down
         while cell != col:
             if int(cell.name.split('->')[1]) == row_index:
                 return cell
