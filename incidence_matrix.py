@@ -158,4 +158,5 @@ if __name__ == "__main__":
     sparse_matrix = IncidenceMatrix(grid_noSol)
     sparse_matrix.print_sparse_matrix()
 
-    IncidenceMatrix.generate_incidence_matrix()
+    im = IncidenceMatrix.generate_incidence_matrix()
+    print(np.array(im))

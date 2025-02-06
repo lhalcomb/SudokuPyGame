@@ -138,7 +138,7 @@ if __name__ == "__main__":
     print(grid)
     #run_sudoku_display(grid)
 
-    sparse_matrix = IncidenceMatrix(grid)
+    #sparse_matrix = IncidenceMatrix(grid)
     
 
 
