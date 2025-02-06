@@ -25,18 +25,20 @@ class IncidenceMatrix:
     def __init__(self, grid: Matrix2D):
         self.header: Root = Root()
         self.grid = grid
-        self.sudoku_incidence = IncidenceMatrix.generate_incidence_matrix()
+        self.sudoku_incidence = self.generate_incidence_matrix(grid)
         self.create_dbly_linked_list()
     
     def grid(self) -> Matrix2D:
         return self.grid
     
-    def generate_incidence_matrix() -> np.ndarray:
+    def generate_incidence_matrix(self, grid: Matrix2D) -> np.ndarray:
         Matrix2D = np.zeros((729, 324), dtype= int)
         for row in range(9):
             for col in range(9):
                 for num in range(9):
                     row_index = num + col * 9 + row * 9 * 9
+                    if grid[row][col] != 0 and grid[row][col] - 1 != num:
+                        continue
 
                     #cell constraint
                     Matrix2D[row_index][81 * 0 + col + row * 9] = 1
@@ -149,14 +151,26 @@ class IncidenceMatrix:
 
 
 if __name__ == "__main__":
-    grid_noSol = [
-            [1, 0, 1, 0],
-            [0, 1, 1, 0],
-            [0, 0, 1, 0],
-            [1, 0, 1, 1]]
+    # grid_noSol = [
+    #         [1, 0, 1, 0],
+    #         [0, 1, 1, 0],
+    #         [0, 0, 1, 0],
+    #         [1, 0, 1, 1]]
+
+    sudoku_grid = [
+        [5, 3, 0, 0, 7, 0, 0, 0, 0],
+        [6, 0, 0, 1, 9, 5, 0, 0, 0],
+        [0, 9, 8, 0, 0, 0, 0, 6, 0],
+        [8, 0, 0, 0, 6, 0, 0, 0, 3],
+        [4, 0, 0, 8, 0, 3, 0, 0, 1],
+        [7, 0, 0, 0, 2, 0, 0, 0, 6],
+        [0, 6, 0, 0, 0, 0, 2, 8, 0],
+        [0, 0, 0, 4, 1, 9, 0, 0, 5],
+        [0, 0, 0, 0, 8, 0, 0, 7, 9]
+    ]
     
-    sparse_matrix = IncidenceMatrix(grid_noSol)
+    sparse_matrix = IncidenceMatrix(sudoku_grid)
     sparse_matrix.print_sparse_matrix()
 
-    im = IncidenceMatrix.generate_incidence_matrix()
-    print(np.array(im))
+    # im = IncidenceMatrix.generate_incidence_matrix()
+    # print(np.array(im))
