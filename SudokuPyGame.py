@@ -90,7 +90,36 @@ def dfs_backtracking_solver(grid, screen, font, draw):
 #Solve the sudoku using the dancing links algorithm
 
 
+def solve_sudokucsv(file_path):
+    df = pd.read_csv(file_path)
+    solve_count = 0 
+    for index, row in df.iterrows():
+        grid = np.array([int(char) for char in row['quizzes']]).reshape(9, 9)
+        matrix = IncidenceMatrix(grid)
+        solver = DLXSolver(matrix)  
+        start_time = time.time()
+        solutions = solver.solve()
+        end_time = time.time()
+        solve_time = end_time - start_time
+        if solutions:
+            solve_count += 1
+            for row_node in solutions:
+                row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
+                grid[row][col] = num + 1
+            print_grid(grid, solve_count, solve_time)
+        
+        else:
+            print("No Solution Found")
+    
+    print(f"Average Solve Time: {solve_time / solve_count:.4f} seconds")
 
+
+def print_grid(grid, solve_count, solve_time):
+    print(f"Grid Solution: {solve_count}")
+    print(f"Solved in: {solve_time:.4f} seconds")
+    for row in grid:
+        print(" ".join(str(num) for num in row))
+    print("\n")
 
 
 #Responsible for displaying the sudoku into a pygame window
@@ -99,6 +128,8 @@ def run_sudoku_display(grid):
     font = pygame.font.SysFont('arial', int(cellSize // 2))
     clock = pygame.time.Clock()
     draw = drawSudoku(cellSize)
+
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -128,6 +159,9 @@ def run_sudoku_display(grid):
                     else:
                         print("No Solution Found")
 
+                if event.key == pygame.K_a:
+                    solve_sudokucsv('sudoku.csv')
+
                 if event.key == pygame.K_r:
                     grid = load_sudoku('sudoku.csv')
                     print(grid)
@@ -150,9 +184,9 @@ def run_sudoku_display(grid):
 
 if __name__ == "__main__":
     grid = load_sudoku('sudoku.csv')
-    print(grid)
-    run_sudoku_display(grid)
-
+    #print(grid)
+    #run_sudoku_display(grid)
+    solve_sudokucsv('sudoku.csv')
     #sparse_matrix = IncidenceMatrix(grid)
     
 
