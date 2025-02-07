@@ -224,10 +224,10 @@ def run_sudoku_display(grid):
 
 
 if __name__ == "__main__":
-    grid = load_sudoku('sudoku.csv')
+    #grid = load_sudoku('sudoku.csv')
     #print(grid)
-    run_sudoku_display(grid)
-    #solve_sudokucsv('sudoku.csv')
+    #run_sudoku_display(grid)
+    solve_sudokucsv('sudoku.csv')
     #sparse_matrix = IncidenceMatrix(grid)
     
 
