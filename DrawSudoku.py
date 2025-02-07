@@ -2,6 +2,7 @@ import pygame
 
 black = (0, 0, 0)
 hack_green = (43, 83, 41)
+background_green = (100, 149, 104)
 
 class drawSudoku:
     def __init__(self, cellSize):
@@ -21,7 +22,7 @@ class drawSudoku:
                 num = grid[row][col]
 
                 if num != 0:
-                    text = font.render(str(num), True, hack_green)
+                    text = font.render(str(num), True, background_green)
                     text_rect = text.get_rect(center=(col * self.cellSize + self.cellSize // 2, row * self.cellSize + self.cellSize // 2))
                     screen.blit(text, text_rect)
 

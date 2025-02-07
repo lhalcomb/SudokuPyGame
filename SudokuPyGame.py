@@ -27,7 +27,7 @@ black = (0, 0, 0)
 hack_green = (43, 83, 41)
 back_ground_green = (100, 149, 104)
 
-size = 540
+size = 1080
 cellSize = size / 9
 
 #PYGAME INITIALIZATION
@@ -93,6 +93,12 @@ def dfs_backtracking_solver(grid, screen, font, draw):
 
 #Solve the sudoku using the dancing links algorithm
 
+def solve_sudoku_dancing_links(grid):
+    matrix = IncidenceMatrix(grid)
+    solver = DLXSolver(matrix)  
+    solutions = solver.solve()
+
+    return solutions
 
 def solve_sudokucsv(file_path):
     df = pd.read_csv(file_path)
@@ -162,6 +168,7 @@ def run_sudoku_display(grid):
     clock = pygame.time.Clock()
     draw = drawSudoku(cellSize)
 
+    current_step = 0
 
     running = True
     while running:
@@ -199,6 +206,41 @@ def run_sudoku_display(grid):
                     
                     grid = load_sudoku('sudoku.csv')
                     run_sudoku_display(grid)
+                
+                if event.key == pygame.K_x:
+                    print("Solving using Dancing Links...")
+                    matrix = IncidenceMatrix(grid)
+                    solver = DLXSolver(matrix)  
+                    solutions = solver.solve()
+
+                    for row_node in solutions:
+                        row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
+                        grid[row][col] = num + 1
+
+                        screen.fill(black)
+                        draw.drawGrid(screen, size)
+                        draw.draw_numbers(screen, font, grid)
+                        pygame.display.flip()
+                        clock.tick(30)
+                        
+                    print("Sudoku Solved")
+                
+                if event.key == pygame.K_SPACE:
+                    solutions = solve_sudoku_dancing_links(grid)
+                    for row_node in solutions:
+                        row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9
+                        grid[row][col] = num + 1
+                        current_step += 1
+                        print(f"Row: {row} Col: {col} Num: {num + 1}")
+                    
+                
+                    if solutions and current_step < len(solutions):
+                        
+                        screen.fill(black)
+                        draw.drawGrid(screen, size)
+                        draw.draw_numbers(screen, font, grid)
+                        pygame.display.flip()
+                        clock.tick(30)
 
                 if event.key == pygame.K_a:
                     solve_sudokucsv('sudoku.csv')
