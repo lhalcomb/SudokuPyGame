@@ -169,7 +169,7 @@ def run_sudoku_display(grid):
     draw = drawSudoku(cellSize)
 
     current_step = 0
-    solutions = []
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -213,12 +213,9 @@ def run_sudoku_display(grid):
                     solver = DLXSolver(matrix)  
                     solutions = solver.solve()
 
-                    
-
                     for row_node in solutions:
                         row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
                         grid[row][col] = num + 1
-                        print(f"Row: {row} Col: {col} Num: {num + 1}")
 
                         screen.fill(black)
                         draw.drawGrid(screen, size)
@@ -228,27 +225,17 @@ def run_sudoku_display(grid):
                         
                     print("Sudoku Solved")
                 
-                if event.key == pygame.K_s:
-                    matrix = IncidenceMatrix(grid)
-                    solver = DLXSolver(matrix)  
-                    solutions = solver.solve()
-                    current_step = 0
-
-                    if solutions:
-                        print("Solutions Found, press space to step through")
-
-                    else: 
-                        print("No Solutions Found")
-
-
                 if event.key == pygame.K_SPACE:
-                    
-                    if solutions and current_step < len(solutions):
-                        row_node = solutions[current_step]
+                    solutions = solve_sudoku_dancing_links(grid)
+                    for row_node in solutions:
                         row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9
                         grid[row][col] = num + 1
                         current_step += 1
-
+                        print(f"Row: {row} Col: {col} Num: {num + 1}")
+                    
+                
+                    if solutions and current_step < len(solutions):
+                        
                         screen.fill(black)
                         draw.drawGrid(screen, size)
                         draw.draw_numbers(screen, font, grid)
@@ -279,7 +266,21 @@ def run_sudoku_display(grid):
 
 
 if __name__ == "__main__":
-    grid = load_sudoku('sudoku.csv')
+    #grid = load_sudoku('sudoku.csv')
+    grid = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 9, 0, 0, 1, 0, 0, 3, 0],
+    [0, 0, 6, 0, 2, 0, 7, 0, 0],
+    [0, 0, 0, 3, 0, 4, 0, 0, 0],
+    [2, 1, 0, 0, 0, 0, 0, 9, 8],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 2, 5, 0, 6, 4, 0, 0],
+    [0, 8, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+]).reshape(9,9)
+    
+
+
     #print(grid)
     run_sudoku_display(grid)
     #solve_sudokucsv('sudoku.csv')
