@@ -279,10 +279,21 @@ if __name__ == "__main__":
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]).reshape(9,9)
     
+    impossible_grid = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0], 
+                                [0, 0, 0, 0, 0, 3, 0, 8, 5], 
+                                [0, 0, 1, 0, 2, 0, 0, 0, 0], 
+                                [0, 0, 0, 5, 0, 7, 0, 0, 0], 
+                                [0, 0, 4, 0, 0, 0, 1, 0, 0], 
+                                [0, 9, 0, 0, 0, 0, 0, 0, 0], 
+                                [5, 0, 0, 0, 0, 0, 0, 7, 3], 
+                                [0, 0, 2, 0, 1, 0, 0, 0, 0], 
+                                [0, 0, 0, 0, 4, 0, 0, 0, 9]
+                                ]).reshape(9, 9)
+    
 
 
     #print(grid)
-    run_sudoku_display(grid)
+    run_sudoku_display(impossible_grid)
     #solve_sudokucsv('sudoku.csv')
     #sparse_matrix = IncidenceMatrix(grid)
     
