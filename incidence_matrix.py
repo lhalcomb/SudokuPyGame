@@ -1,8 +1,6 @@
 from typing import List
 import numpy as np
 
-from SudokuPyGame import load_sudoku
-
 Matrix2D = List[List[int]]
 
 class Cell:
@@ -33,6 +31,9 @@ class IncidenceMatrix:
     def grid(self) -> Matrix2D:
         return self.grid
     
+    def shape(self) -> tuple:
+        return self.sudoku_incidence.shape
+    
     def generate_incidence_matrix(self, grid: Matrix2D) -> np.ndarray:
         Matrix2D = np.zeros((729, 324), dtype= int)
         for row in range(9):
@@ -58,21 +59,20 @@ class IncidenceMatrix:
         return Matrix2D
     
     
-    
     def create_dbly_linked_list(self):
         self.create_columns()
         self.connect_rows()
 
     def create_columns(self) -> None:
         prev_col = self.header
-        for col_index in range(324):
+        for col_index in range(self.shape()[1]):
             name = f"col->{col_index}"
             col = Column(size=0, name=name)
             col.left = prev_col
             prev_col.right = col
             self.columns[col_index] = col
             prev_row = col
-            for cell_index in range(729):
+            for cell_index in range(self.shape()[0]):
                 if self.sudoku_incidence[cell_index][col_index] != 1:
                     continue
                 row = Cell(name=f"row->{cell_index}", col=col)
@@ -87,7 +87,7 @@ class IncidenceMatrix:
         prev_col.right = self.header
 
     def connect_rows(self) -> None:
-        for row in range(729):
+        for row in range(self.shape()[0]):
             ones_in_row = self.ones_in_row(row)
 
             if len(ones_in_row) == 0:
@@ -129,7 +129,7 @@ class IncidenceMatrix:
             #         ones.append(row)
             
             # return ones
-            return [col for col in range(324) if self.sudoku_incidence[row][col] == 1]
+            return [col for col in range(self.shape()[1]) if self.sudoku_incidence[row][col] == 1]
     def print_sparse_matrix(self): 
         cells: List[List[str]] = [[self.header.name]]
         col = self.header.right
@@ -151,38 +151,3 @@ class IncidenceMatrix:
         for row in cells:
             print(', '.join(row))
 
-
-if __name__ == "__main__":
-    # grid_noSol = [
-    #         [1, 0, 1, 0],
-    #         [0, 1, 1, 0],
-    #         [0, 0, 1, 0],
-    #         [1, 0, 1, 1]]
-
-
-    sudoku_grid = load_sudoku("sudoku.csv")
-    print(sudoku_grid)
-    # sudoku_grid = [
-    #     [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    #     [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    #     [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    #     [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    #     [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    #     [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    #     [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    #     [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    #     [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    # ]
-    
-    sparse_matrix = IncidenceMatrix(sudoku_grid)
-    sparse_matrix.print_sparse_matrix()
-
-    print("                        \n")
-    print("                        \n")
-
-    for col in sparse_matrix.columns:
-        print(f"Column Name: {col.name}, Column Size -> {col.size}")
-    """This means, for the respective contraint, how many empty cells are there in the column """
-
-    # im = IncidenceMatrix.generate_incidence_matrix()
-    # print(np.array(im))

@@ -105,7 +105,7 @@ def solve_sudokucsv(file_path):
     solve_count = 0 
     total_solve_time = 0
 
-    iteration_file = 'iteration_count.txt'
+    iteration_file = '/benchmarking/iteration_count.txt'
     if os.path.exists(iteration_file):
         with open(iteration_file, 'r') as f:
             iteration_count = int(f.read().strip())
@@ -146,7 +146,7 @@ def solve_sudokucsv(file_path):
     
     print(f"Average Solve Time: {average_solve_time:.4f} seconds")
 
-    with open('average_solve_time.txt', 'w') as f:
+    with open('/benchmarking/average_solve_time.txt', 'w') as f:
         f.write(f"Iteration: {iteration_count} Average Solve Time: {average_solve_time:.4f} seconds")
     
     with open(iteration_file, 'w') as f:
@@ -266,8 +266,8 @@ def run_sudoku_display(grid):
 
 
 if __name__ == "__main__":
-    #grid = load_sudoku('sudoku.csv')
-    grid = np.array([
+    grid = load_sudoku('sudoku.csv')
+    grid1 = np.array([
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 9, 0, 0, 1, 0, 0, 3, 0],
     [0, 0, 6, 0, 2, 0, 7, 0, 0],
@@ -294,6 +294,7 @@ if __name__ == "__main__":
 
     #print(grid)
     run_sudoku_display(impossible_grid)
+    #run_sudoku_display(grid)
     #solve_sudokucsv('sudoku.csv')
     #sparse_matrix = IncidenceMatrix(grid)
     
