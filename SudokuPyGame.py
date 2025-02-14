@@ -26,6 +26,7 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 hack_green = (43, 83, 41)
 back_ground_green = (100, 149, 104)
+light_green = (144, 238, 144)
 
 size = 1080
 cellSize = size / 9
@@ -213,17 +214,31 @@ def run_sudoku_display(grid):
                     solver = DLXSolver(matrix)  
                     solutions = solver.solve()
 
-                    for row_node in solutions:
-                        row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
-                        grid[row][col] = num + 1
 
-                        screen.fill(black)
-                        draw.drawGrid(screen, size)
-                        draw.draw_numbers(screen, font, grid)
+                    if solutions: 
+                        for row_node in solutions:
+                            row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9 
+                            grid[row][col] = num + 1
+
+                            screen.fill(black)
+                            draw.drawGrid(screen, size)
+                            draw.draw_numbers(screen, font, grid)
+                            pygame.display.flip()
+                            clock.tick(30)
+
+                    
+                        text_surface = font.render("Sudoku Solved!!", True, light_green, black)
+                        text_rect = text_surface.get_rect(center=(size // 2, size // 2))
+                        screen.blit(text_surface, text_rect)
                         pygame.display.flip()
-                        clock.tick(30)
-                        
-                    print("Sudoku Solved")
+
+                        waiting = True
+                        while waiting:
+                            for event in pygame.event.get():
+                                if event.type == pygame.KEYDOWN:
+                                    waiting = False
+
+                   
                 
                 if event.key == pygame.K_SPACE:
                     solutions = solve_sudoku_dancing_links(grid)

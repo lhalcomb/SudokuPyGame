@@ -45,7 +45,11 @@ def main():
     node_size = 5
     sudoku_grid = load_sudoku("sudoku.csv")
     matrix = IncidenceMatrix(sudoku_grid)
-    solver = DLXSolver(matrix)
+    
+    matrix_surface = pygame.Surface((matrix.shape()[1] * node_size, matrix.shape()[0] * node_size))
+
+    scroll_x, scroll_y = 0, 0
+    scroll_speed = 20
    
     running = True
     while running:
@@ -53,32 +57,25 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             
+                screen.fill((0, 0, 0))
+                draw_matrix(screen, matrix.sudoku_incidence, node_size)
+                draw_connections(screen, matrix.sudoku_incidence, node_size)
+
             if event.type == pygame.KEYDOWN:
-            
-                if event.key == pygame.K_l:
-                        print("Solving using Dancing Links...")
-                        #solutions = solve_sudoku_dancing_links(sudoku_grid)
-                        solutions = solver.solve()
+                screen.fill((0, 0, 0))
+                draw_matrix(screen, matrix.sudoku_incidence, node_size)
+                draw_connections(screen, matrix.sudoku_incidence, node_size)
+                
+                if event.key == pygame.K_UP:
+                    scroll_y = max(scroll_y - scroll_speed, 0)
+                elif event.key == pygame.K_DOWN:
+                    scroll_y = min(scroll_y + scroll_speed, matrix_surface.get_height() - screen.get_height())
+                elif event.key == pygame.K_LEFT:
+                    scroll_x = max(scroll_x - scroll_speed, 0)
+                elif event.key == pygame.K_RIGHT:
+                    scroll_x = min(scroll_x + scroll_speed, matrix_surface.get_width() - screen.get_width())
 
-                        if solutions:
-                            for row_node in solutions:
-                                row, col, num = int(row_node.name.split('->')[1]) // 81, (int(row_node.name.split('->')[1]) % 81) // 9 , int(row_node.name.split('->')[1]) % 9
-                                sudoku_grid[row][col] = num + 1
-                                print(f"Row: {row} Col: {col} Num: {num + 1}")
-                                
-                                solver.cover(row_node.col)
-                                screen.fill((0, 0, 0))
-                                draw_matrix(screen, matrix.sudoku_incidence, node_size)
-                                draw_connections(screen, matrix.sudoku_incidence, node_size)
-                                pygame.display.flip()
-                                pygame.time.delay(1)
-                        else:
-                            print("No Solution Found")
-
-        screen.fill((0, 0, 0))
-        pygame.display.flip()
-
-    pygame.display.flip()
+            pygame.display.flip()
 
     pygame.quit()
 
@@ -123,3 +120,33 @@ if __name__ == "__main__":
     # print((sparse_matrix.sudoku_incidence[1][0].size))
 
     main()
+
+"""
+matrix_surface = pygame.Surface((matrix.shape()[1] * node_size, matrix.shape()[0] * node_size))
+
+    draw_matrix(screen, matrix.sudoku_incidence, node_size)
+    draw_connections(screen, matrix.sudoku_incidence, node_size)
+
+    scroll_x, scroll_y = 0, 0   
+    scroll_speed = 20
+   
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    scroll_y = max(scroll_y - scroll_speed, 0)
+                elif event.key == pygame.K_DOWN:
+                    scroll_y = min(scroll_y + scroll_speed, matrix_surface.get_height() - screen.get_height())
+                elif event.key == pygame.K_LEFT:
+                    scroll_x = max(scroll_x - scroll_speed, 0)
+                elif event.key == pygame.K_RIGHT:
+                    scroll_x = min(scroll_x + scroll_speed, matrix_surface.get_width() - screen.get_width())
+        
+        screen.fill((0, 0, 0))
+        screen.blit(matrix_surface, (-scroll_x, -scroll_y))
+        pygame.display.flip()
+
+"""
