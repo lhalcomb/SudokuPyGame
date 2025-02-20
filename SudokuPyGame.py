@@ -227,16 +227,16 @@ def run_sudoku_display(grid):
                             clock.tick(30)
 
                     
-                        text_surface = font.render("Sudoku Solved!!", True, light_green, black)
-                        text_rect = text_surface.get_rect(center=(size // 2, size // 2))
-                        screen.blit(text_surface, text_rect)
+                        # text_surface = font.render("Sudoku Solved!!", True, light_green, black)
+                        # text_rect = text_surface.get_rect(center=(size // 2, size // 2))
+                        # screen.blit(text_surface, text_rect)
                         pygame.display.flip()
 
-                        waiting = True
-                        while waiting:
-                            for event in pygame.event.get():
-                                if event.type == pygame.KEYDOWN:
-                                    waiting = False
+                        # waiting = True
+                        # while waiting:
+                        #     for event in pygame.event.get():
+                        #         if event.type == pygame.KEYDOWN:
+                        #             waiting = False
 
                    
                 
