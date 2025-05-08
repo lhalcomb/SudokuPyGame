@@ -1,4 +1,4 @@
-In my Junior year as a Computer Science student, I became fascinated with Sudoku Puzzles. This is my attempt at applying Search Algorithms and Machine Learning to the famous Sudoku problem.
+In my Junior year as a Computer Science student, I became fascinated with Sudoku Puzzles. This is my attempt at applying Dancing Links to the famous Sudoku problem.
 
 # Resources
 
