@@ -9,7 +9,7 @@ class Cell:
         self.right = right
         self.up = up
         self.down = down
-        self.col = col
+        self.col = col 
         self.name = name
 
 class Column(Cell):

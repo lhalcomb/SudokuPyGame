@@ -13,7 +13,7 @@ class DLXSolver:
         column = self.choose_column()
         self.cover(column)
 
-        row = column.down
+        row = column.down 
         while row != column:
             self.solutions.append(row)
             right_node = row.right

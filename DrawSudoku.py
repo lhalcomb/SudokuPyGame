@@ -8,8 +8,6 @@ class drawSudoku:
     def __init__(self, cellSize):
         self.cellSize = cellSize
         
-
-
     def drawGrid(self, screen, size):
         for i in range(10):
             line_thickness = 3 if i % 3 == 0 else 1

@@ -28,7 +28,7 @@ hack_green = (43, 83, 41)
 back_ground_green = (100, 149, 104)
 light_green = (144, 238, 144)
 
-size = 1080
+size = 600
 cellSize = size / 9
 
 #PYGAME INITIALIZATION
@@ -42,7 +42,10 @@ def init_pygame():
 #Sudoku Randomized Grid Selection Using NumPy and Pandas
 def load_sudoku(file_path) -> list[list[int]]:
     df = pd.read_csv(file_path)
-    random_quiz = random.choice(df['quizzes'])
+    if (file_path == 'sudoku9.csv'):
+        random_quiz = random.choice(df['puzzle'])
+    else:
+        random_quiz = random.choice(df['quizzes'])
     grid = np.array([int(char) for char in random_quiz]).reshape(9, 9)
     return grid
 
@@ -94,7 +97,7 @@ def dfs_backtracking_solver(grid, screen, font, draw):
 
 #Solve the sudoku using the dancing links algorithm
 
-def solve_sudoku_dancing_links(grid):
+def solve_sudoku_dancing_links(grid): 
     matrix = IncidenceMatrix(grid)
     solver = DLXSolver(matrix)  
     solutions = solver.solve()
@@ -135,7 +138,7 @@ def solve_sudokucsv(file_path):
 
             if solve_count % 10000 == 0:
                 print_grid(grid, solve_count, solve_time)
-            #print_grid(grid, solve_count, solve_time)
+            print_grid(grid, solve_count, solve_time)
         
         else:
             print("No Solution Found")
@@ -205,7 +208,7 @@ def run_sudoku_display(grid):
 
                     
                     
-                    grid = load_sudoku('sudoku.csv')
+                    grid = load_sudoku('sudoku9.csv')
                     run_sudoku_display(grid)
                 
                 if event.key == pygame.K_x:
@@ -258,10 +261,10 @@ def run_sudoku_display(grid):
                         clock.tick(30)
 
                 if event.key == pygame.K_a:
-                    solve_sudokucsv('sudoku.csv')
+                    solve_sudokucsv('sudoku9.csv')
 
                 if event.key == pygame.K_r:
-                    grid = load_sudoku('sudoku.csv')
+                    grid = load_sudoku('sudoku9.csv')
                     print(grid)
                     run_sudoku_display(grid)
 
@@ -281,7 +284,7 @@ def run_sudoku_display(grid):
 
 
 if __name__ == "__main__":
-    grid = load_sudoku('sudoku.csv')
+    #grid = load_sudoku('sudoku9.csv')
     grid1 = np.array([
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 9, 0, 0, 1, 0, 0, 3, 0],
